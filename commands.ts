@@ -194,8 +194,6 @@ export const queryMotor = () => 'QM' + CR
 
 /**
  * "QG" — Query General
- * Command: QG<CR>
- * Execution: Immediate
  * This command reads the status of eight bits of information, and returns them as a bit
  * field expressed as a single hexadecimal byte.
  *
@@ -238,11 +236,19 @@ export const queryMotor = () => 'QM' + CR
  * the FIFO bit is 1; if the FIFO is full, then a command is currently executing. Additional
  * information about the motion queue can be found in the description of the QM query.
  */
+enum GeneralInfo {
+    Fifo = 0,      // Fifo motion queue not empty
+    Mtr2 = 1 << 0, // Motor 2 moving
+    Mtr1 = 1 << 1, // Motor 1 moving
+    Cmd = 1 << 2,  // Command executing
+    Pen = 1 << 3,  // Pen is down
+    Prg = 1 << 4,  // Prg button pressed
+    Rb2 = 1 << 5,  // Status of GPIO pin RB2
+    Rb5 = 1 << 6,  // Status of GPIO pin RB5
+}
 
-export const generalQuery = () => 'QG' + CR
+type GeneralQuery = 'QG\r'
+export const generalQuery = (): GeneralQuery => 'QG\r'
 
-/**
- * "V" — Version query
- * This command prints out the version string of the firmware currently running on the EBB.
- */
+/** Version Query - print out the version string of the firmware currently running on the EBB */
 export const version = () => 'V' + CR
