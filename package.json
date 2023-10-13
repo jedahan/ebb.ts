@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx ts-node test"
+    "test": "tsc --project test.tsconfig.json && node test"
   },
   "keywords": [],
   "author": "",
