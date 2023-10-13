@@ -1,6 +1,8 @@
 import assert from 'node:assert'
 import test from 'node:test'
-import { config, PEN_LIFT_MECHANISM, SC, stepperAndServoModeConfigure, STEPPER_SIGNAL_CONTROL } from './commands'
+import { stepperAndServoModeConfigure } from '../api/enum'
+import { config } from '../api/overload'
+import { PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL } from '../enums'
 
 test('discriminatedUnion - pen lift', async (t) => {
     await t.test('generates the correct command', async () => {

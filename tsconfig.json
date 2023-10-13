@@ -8,6 +8,6 @@
     "skipLibCheck": true,
   },
   "files": [
-    "ebb.ts",
+    "commands.ts",
   ]
 }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc --project test.tsconfig.json && node test"
+    "test": "tsc --project tests/test.tsconfig.json && node tests/test"
   },
   "keywords": [],
   "author": "",
