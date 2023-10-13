@@ -1,3 +1,5 @@
 Type definitions, and functions for interfacing with eggbotboards
 
 See test.ts for examples of usage
+
+this is currently very work-in-progress. feeback on api appreciated
