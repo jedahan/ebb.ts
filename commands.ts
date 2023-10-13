@@ -1,4 +1,4 @@
-export const CR='\r'
+import { CR } from './enums'
 
 /**
  * [Version](http://evil-mad.github.io/EggBot/ebb.html#V)

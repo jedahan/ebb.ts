@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { SC, PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL, POWER } from "../enums"
+import { SC, PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL, POWER, CR } from "../enums"
 
 const SC_VALUES = z.discriminatedUnion("parameter", [
   z.object({ parameter: z.literal(SC.PEN_LIFT_MECHANISM), integer: z.nativeEnum(PEN_LIFT_MECHANISM) }),
@@ -29,5 +29,5 @@ type StepperAndServoModeConfigureArguments = z.infer<typeof SC_VALUES>
  * @param integer import PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL, or POWER for some of the commands
  */
 export const stepperAndServoModeConfigure = ({ parameter, integer }: StepperAndServoModeConfigureArguments) => {
-  return ['SC', parameter, integer].join(',') + '\r'
+  return ['SC', parameter, integer].join(',') + CR
 }
