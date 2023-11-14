@@ -1,4 +1,7 @@
-import { CR } from './enums'
+import { CR } from '../enums'
+
+export * from './enum'
+export * from '../enums'
 
 /**
  * [Version](http://evil-mad.github.io/EggBot/ebb.html#V)
