@@ -28,6 +28,9 @@ lowLevelMove({
 Higher level api that is easier to use
 
 ```ts
+reset()
+reboot()
+version()
 config(SC.USE_ALT_PRG, POWER.SERVO_OUT)
 config(SC.PEN_LIFT_MECHANISM, PEN_LIFT_MECHANISM.RC_SERVO_OUT)
 motors(EM.ENABLE_1.GLOBAL_STEP_MODE_1_16)

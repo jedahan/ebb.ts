@@ -8,6 +8,7 @@
     "skipLibCheck": true,
   },
   "files": [
-    "commands.ts",
+    "api/commands.ts",
+    "api/wrapper.ts"
   ]
 }

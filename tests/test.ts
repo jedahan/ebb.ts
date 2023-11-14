@@ -2,7 +2,7 @@ import assert from 'node:assert'
 import test from 'node:test'
 import { enableMotors, lowLevelMove, stepperAndServoModeConfigure } from '../api/commands'
 import { EM, LM, SC, PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL } from '../api/commands'
-import { config, motors } from '../api/overload'
+import { config, motors } from '../api/wrapper'
 
 test('discriminatedUnion - pen lift', async (t) => {
     await t.test('generates the correct command', async () => {

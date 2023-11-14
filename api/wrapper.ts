@@ -2,6 +2,8 @@ import { z } from "zod"
 import { PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL, POWER, ENABLE_1, ENABLE_2 } from "../enums"
 import { enableMotors, stepperAndServoModeConfigure } from "./enum"
 
+export { reboot, reset, version } from './commands'
+
 const mechanisms = z.nativeEnum(PEN_LIFT_MECHANISM)
 type Mechanism = z.infer<typeof mechanisms>
 
