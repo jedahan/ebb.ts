@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { SC, PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL, POWER, CR, EM } from "../enums"
+import { SC, PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL, POWER, CR, EM, CLEAR, LM } from "../enums"
 
 const SC_VALUES = z.discriminatedUnion("parameter", [
   z.object({ parameter: z.literal(SC.PEN_LIFT_MECHANISM), integer: z.nativeEnum(PEN_LIFT_MECHANISM) }),
@@ -45,4 +45,25 @@ type EnableMotorsArguments = z.infer<typeof EM_VALUES>
  */
 export const enableMotors = ({enable1, enable2}: EnableMotorsArguments) => {
   return ['EM', enable1, enable2].join(',') + CR
+}
+
+const MAX_VALUE_31_BITS = 2147483647
+const RATE = z.number().int().min(0).max(MAX_VALUE_31_BITS)
+const STEPS = z.number().int().min(-MAX_VALUE_31_BITS).max(MAX_VALUE_31_BITS)
+const ACCEL = z.number().int().min(-MAX_VALUE_31_BITS).max(MAX_VALUE_31_BITS)
+
+const LM_VALUES = z.object({
+  rate1: RATE,
+  steps1: STEPS,
+  accel1: ACCEL,
+  rate2: RATE, 
+  steps2: STEPS,
+  accel2: ACCEL,
+  clear: z.nativeEnum(LM.CLEAR).optional()
+})
+
+type LowLevelMoveArguments = z.infer<typeof LM_VALUES>
+
+export const lowLevelMove = ({rate1, steps1, accel1, rate2, steps2, accel2, clear}: LowLevelMoveArguments) => {
+  return ['LM', rate1, steps1, accel1, rate2, steps2, accel2].join(',') + (clear ? `,${clear}` : '') + CR
 }

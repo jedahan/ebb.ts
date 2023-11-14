@@ -1,8 +1,8 @@
 import assert from 'node:assert'
 import test from 'node:test'
-import { enableMotors, stepperAndServoModeConfigure } from '../api/enum'
+import { enableMotors, lowLevelMove, stepperAndServoModeConfigure } from '../api/enum'
 import { config, motors } from '../api/overload'
-import { EM, ENABLE_1, ENABLE_2, PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL } from '../enums'
+import { EM, ENABLE_1, ENABLE_2, LM, PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL } from '../enums'
 
 test('discriminatedUnion - pen lift', async (t) => {
     await t.test('generates the correct command', async () => {
@@ -72,6 +72,44 @@ test('enable motors - wrapper', async (t) => {
         assert.strictEqual(
             'EM,1,0\r',
             motors(EM.ENABLE_1.GLOBAL_STEP_MODE_1_16)
+        )
+    })
+})
+
+test('low-level move', async (t) => {
+    await t.test('generates correct move command with clear', async () => {
+        assert.strictEqual(
+            'LM,10,123,222,11,124,223,3\r',
+            lowLevelMove({
+                rate1: 10,
+                steps1: 123,
+                accel1: 222,
+                rate2: 11,
+                steps2: 124,
+                accel2: 223,
+                clear: LM.CLEAR.CLEAR_BOTH
+            })
+        )
+    })
+
+    await t.test('generates correct move command without clear', async () => {
+        /**
+         * Example 4:
+         * This example will step both axis at a 1 ms/step rate, and axis 1 will step for 500 steps and axis 2 will step for 250 steps.
+         * This is usually not what you want in practice; it's usually better if the moves for each axis terminate at the same time.
+         * This is a "constant-rate" move without acceleration or deceleration on either axis.
+         */
+        assert.strictEqual(
+            'LM,85899346,500,0,85899346,250,0\r',
+            lowLevelMove({
+                rate1: 85899346,
+                steps1: 500,
+                accel1: 0,
+                rate2: 85899346,
+                steps2: 250,
+                accel2: 0,
+
+            })
         )
     })
 })
