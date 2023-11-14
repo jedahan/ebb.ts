@@ -1,6 +1,6 @@
 import { z } from "zod"
-import { PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL, POWER } from "../enums"
-import { stepperAndServoModeConfigure } from "./enum"
+import { PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL, POWER, ENABLE_1, ENABLE_2 } from "../enums"
+import { enableMotors, stepperAndServoModeConfigure } from "./enum"
 
 const mechanisms = z.nativeEnum(PEN_LIFT_MECHANISM)
 type Mechanism = z.infer<typeof mechanisms>
@@ -31,4 +31,9 @@ export function config(parameter: SC.SERVO_RATE_DOWN, integer: PositiveInteger):
 export function config(parameter: SC.USE_ALT_PRG, integer: POWER ): void;
 export function config(parameter: SC, integer: PEN_LIFT_MECHANISM | STEPPER_SIGNAL_CONTROL | PositiveInteger) {
   return stepperAndServoModeConfigure({parameter, integer})
+}
+
+/// set power and step resolution for one or both motors - see EM command for more info
+export function motors(enable1: ENABLE_1, enable2: ENABLE_2 = ENABLE_2.DISABLE_MOTOR) {
+  return enableMotors({enable1, enable2})
 }

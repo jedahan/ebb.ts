@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { SC, PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL, POWER, CR } from "../enums"
+import { SC, PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL, POWER, CR, EM } from "../enums"
 
 const SC_VALUES = z.discriminatedUnion("parameter", [
   z.object({ parameter: z.literal(SC.PEN_LIFT_MECHANISM), integer: z.nativeEnum(PEN_LIFT_MECHANISM) }),
@@ -30,4 +30,19 @@ type StepperAndServoModeConfigureArguments = z.infer<typeof SC_VALUES>
  */
 export const stepperAndServoModeConfigure = ({ parameter, integer }: StepperAndServoModeConfigureArguments) => {
   return ['SC', parameter, integer].join(',') + CR
+}
+
+const EM_VALUES = z.object({
+  enable1: z.nativeEnum(EM.ENABLE_1).default(EM.ENABLE_1.DISABLE_MOTOR),
+  enable2: z.nativeEnum(EM.ENABLE_2).default(EM.ENABLE_2.DISABLE_MOTOR)
+})
+
+type EnableMotorsArguments = z.infer<typeof EM_VALUES>
+
+/**
+ * @param enable1 disable power to motor 1, or set the global stepping resolution
+ * @param enable2 disable/enable power to motor 2 - will use same resolution as enable1
+ */
+export const enableMotors = ({enable1, enable2}: EnableMotorsArguments) => {
+  return ['EM', enable1, enable2].join(',') + CR
 }

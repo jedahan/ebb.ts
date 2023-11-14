@@ -1,8 +1,8 @@
 import assert from 'node:assert'
 import test from 'node:test'
-import { stepperAndServoModeConfigure } from '../api/enum'
-import { config } from '../api/overload'
-import { PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL } from '../enums'
+import { enableMotors, stepperAndServoModeConfigure } from '../api/enum'
+import { config, motors } from '../api/overload'
+import { EM, ENABLE_1, ENABLE_2, PEN_LIFT_MECHANISM, SC, STEPPER_SIGNAL_CONTROL } from '../enums'
 
 test('discriminatedUnion - pen lift', async (t) => {
     await t.test('generates the correct command', async () => {
@@ -42,5 +42,36 @@ test('overload - pen lift', async (t) => {
     await t.test('errors on compatible integer from incorrect enum', () => {
         // @ts-expect-error
         config(SC.PEN_LIFT_MECHANISM, STEPPER_SIGNAL_CONTROL.DISCONNECT)
+    })
+})
+
+test('enable motors', async (t) => {
+    await t.test('generates correct disable motor command', async () => {
+        assert.strictEqual(
+            'EM,0,0\r', 
+            enableMotors({
+                enable1: EM.ENABLE_1.DISABLE_MOTOR,
+                enable2: EM.ENABLE_2.DISABLE_MOTOR
+            })
+        )
+    })
+
+    await t.test('errors on enable1 out of range', () => {
+        // @ts-expect-error
+        enableMotors({enable1: 6, enable2: ENABLE_2.DISABLE_MOTOR})
+    })
+
+    await t.test('errors on compatible enable1 from incorrect enum', () => {
+        // @ts-expect-error
+        enableMotors({enable1: ENABLE_2.ENABLE_MOTOR_2, enable2: ENABLE_2.DISABLE_MOTOR})
+    })
+})
+
+test('enable motors - wrapper', async (t) => {
+    await t.test('supports setting a single motor', async () => {
+        assert.strictEqual(
+            'EM,1,0\r',
+            motors(EM.ENABLE_1.GLOBAL_STEP_MODE_1_16)
+        )
     })
 })
